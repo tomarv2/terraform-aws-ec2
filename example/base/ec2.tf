@@ -3,7 +3,7 @@ locals {
 }
 
 module "ec2" {
-  source                                = "git::git@github.com:tomarv2/terraform-aws-ec2.git?ref=0.0.1"
+  source                                = "../.."
   email                                 = var.email
   teamid                                = var.teamid
   prjid                                 = var.prjid

@@ -1,11 +1,33 @@
 # terraform-aws-ec2
 Terraform module for ec2
 
+**The module does the following:**
+
+Looks-up AMI ID from _**https://github.com/tomarv2/terraform-global**_
+Create security group
+Create load balancer
+Create target group
+Generates cloud-init userdata
+Default tags
+Launches instance
+
+## How to use
+
+**Recommended method:**
+
+- Install tfremote package: `pip install tfremote`
+
+- Change to `example/base` directory
+
+- `tf -cloud aws plan -var-file <tfvars file path>`
+
+- `tf -cloud aws apply -var-file <tfvars file path>`
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12 |
+| terraform | >= 0.14 |
 | aws | ~> 2.61 |
 
 ## Providers
@@ -19,69 +41,45 @@ Terraform module for ec2
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| account\_id | n/a | `any` | n/a | yes |
-| alb\_action\_type | n/a | `string` | `"forward"` | no |
-| alb\_is\_public | n/a | `string` | `"false"` | no |
-| alb\_listener\_port | n/a | `string` | `"80"` | no |
-| alb\_listener\_protocol | n/a | `string` | `"HTTP"` | no |
-| alb\_target\_group\_port | n/a | `string` | `"80"` | no |
-| alb\_target\_group\_protocol | n/a | `string` | `"HTTP"` | no |
-| alb\_type | n/a | `string` | `"application"` | no |
+| account\_id | (Required) AWS account id (used to pull values from shared base module like vpc info, subnet ids) | `any` | n/a | yes |
 | asg\_cooldown | time between a scaling activity and the succeeding scaling activity | `string` | `"300"` | no |
 | asg\_desired | The desired number of instances for the autoscaling group | `number` | `1` | no |
-| asg\_health\_check\_type | Can be EC2 or ELB | `string` | `"EC2"` | no |
+| asg\_health\_check\_type | can be EC2 or ELB | `string` | `"EC2"` | no |
 | asg\_health\_grace\_period | How long to wait for instance to come up and start doing health checks | `number` | `600` | no |
 | asg\_max | The maximum number of instances for the autoscaling group | `number` | `1` | no |
 | asg\_min | The minimum number of instances for the autoscaling group | `number` | `1` | no |
-| assoicate\_public\_ip | n/a | `string` | `"true"` | no |
-| aws\_region | The AWS region to create things in. | `string` | `"us-east-2"` | no |
+| associate\_public\_ip | associate public ip to launch configuration | `string` | `"true"` | no |
+| aws\_region | The AWS region to create resources | `string` | `"us-west-2"` | no |
 | az\_count | Number of AZs to cover in a given AWS region | `string` | `"2"` | no |
-| create\_before\_destroy | n/a | `bool` | `true` | no |
-| deployment\_maximum\_percent | n/a | `string` | `"100"` | no |
-| deployment\_minimum\_healthy\_percent | n/a | `string` | `"0"` | no |
+| create\_before\_destroy | lifecycle for asg | `bool` | `true` | no |
 | ebs\_vol\_name | name of ebs volume | `string` | `"/dev/xvdh"` | no |
-| ebs\_vol\_size | size of ebs volume | `string` | `"100"` | no |
+| ebs\_vol\_size | size of ebs volume | `string` | `"10"` | no |
 | ebs\_vol\_type | type of ebs volume | `string` | `"gp2"` | no |
-| efs\_to\_mount | n/a | `string` | `""` | no |
-| email | Team email, not individual email. Cannot be changed after running 'tf apply'. | `any` | n/a | yes |
-| enable\_monitoring | n/a | `string` | `"false"` | no |
-| force\_delete | n/a | `string` | `"true"` | no |
-| healthcheck\_interval | n/a | `string` | `"120"` | no |
-| healthcheck\_matcher | n/a | `string` | `"200"` | no |
-| healthcheck\_path | n/a | `string` | `"/healthcheck"` | no |
-| healthcheck\_port | n/a | `string` | `"80"` | no |
-| healthcheck\_retries | n/a | `number` | `2` | no |
-| healthcheck\_start\_period | n/a | `number` | `120` | no |
-| healthcheck\_timeout | n/a | `string` | `"30"` | no |
-| healthy\_threshold | n/a | `string` | `"2"` | no |
-| iam\_instance\_profile\_to\_use | IAM role to be used by instance | `any` | n/a | yes |
-| inst\_type | The AWS instance type | `string` | `"t2.medium"` | no |
-| key\_name | The SSH key name | `any` | n/a | yes |
-| os\_release | The AMI OS release. | `string` | `"test_ops_latest"` | no |
-| os\_version | The AMI OS version. | `string` | `"Centos7X86_64"` | no |
-| prjid | Name of the project/stack.  EG: mystack | `any` | n/a | yes |
-| profile\_to\_use | Getting values from ~/.aws/credentials | `any` | n/a | yes |
+| efs\_to\_mount | (Optional) EFS to mount for persistent storage | `string` | `""` | no |
+| email | email address to be used for tagging (suggestion: use group email address) | `any` | n/a | yes |
+| enable\_monitoring | enable monitoring of launch configuration | `string` | `"false"` | no |
+| force\_delete | forcefully delete asg | `string` | `"true"` | no |
+| iam\_instance\_profile\_to\_use | IAM instance profile | `any` | n/a | yes |
+| image\_id | image id to use for deployment if none is provided a default will be used | `any` | `null` | no |
+| inst\_type | aws instance type | `string` | `"t2.small"` | no |
+| key\_name | The SSH key name (NOTE: key should pre-exist) | `any` | n/a | yes |
+| os\_release | ami os release | `string` | `"test_ops_latest"` | no |
+| os\_version | ami os version | `string` | `"Centos7X86_64"` | no |
+| prjid | (Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply' | `any` | n/a | yes |
+| profile\_to\_use | Getting values from ~/.aws/credentials | `string` | `"default"` | no |
 | root\_volume\_size | In gigabytes, must be at least 8 | `number` | `30` | no |
-| root\_volume\_type | Can be standard or gp2 | `string` | `"gp2"` | no |
-| security\_groups\_to\_use | Security groups to use | `any` | n/a | yes |
-| service\_ports | n/a | `any` | n/a | yes |
-| spot-instance-price | Set to blank to use on-demand pricing | `string` | `""` | no |
-| teamid | Name of the team or group e.g. devops, dataengineering. Should not be changed after running 'tf apply'. | `any` | n/a | yes |
-| unhealthy\_threshold | n/a | `string` | `"2"` | no |
-| user\_data | n/a | `any` | n/a | yes |
+| root\_volume\_type | can be standard or gp2 | `string` | `"gp2"` | no |
+| security\_groups\_to\_use | Security groups to use | `list` | `[]` | no |
+| spot-instance-price | set to blank to use on-demand pricing | `string` | `""` | no |
+| stickiness | target group sticky configuration | <pre>object({<br>    cookie_duration = number<br>    enabled         = bool<br>  })</pre> | `null` | no |
+| teamid | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `any` | n/a | yes |
+| user\_data\_file\_path | user data file path | `string` | `"scripts/userdata.sh"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| alb\_listener | n/a |
-| alb\_target\_group\_id | n/a |
-| alb\_zoneid | n/a |
+| autoscaling\_group\_arn | The name of the autoscaling group. |
 | autoscaling\_group\_name | The name of the autoscaling group. |
 | key\_used | The key used to create the resources. |
 | launch\_configuration\_name | The name of the launch configuration. |
-| security\_group\_id | The ID of the default security group associated. |
-
-## TODO:
-
-fix issue with SG group deletion when attached to another SG
