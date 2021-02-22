@@ -1,7 +1,7 @@
 # terraform-aws-ec2
 Terraform module for ec2
 
-**The module does the following:**
+## The module does the following
 
 Looks-up AMI ID from _**https://github.com/tomarv2/terraform-global**_
 Create security group
@@ -11,7 +11,18 @@ Generates cloud-init userdata
 Default tags
 Launches instance
 
-## How to use
+## Versions
+
+- Module tested for Terraform 0.14.
+- AWS provider version [3.29.0](https://registry.terraform.io/providers/hashicorp/aws/latest)
+- `main` branch: Provider versions not pinned to keep up with Terraform releases
+- `tags` releases: Tags are pinned with versions (use tag latest tag in your releases)
+
+**NOTE:** 
+
+- Read more on [tfremote](https://github.com/tomarv2/tfremote)
+
+## Usage
 
 **Recommended method:**
 
@@ -23,19 +34,6 @@ Launches instance
 
 - `tf -cloud aws apply -var-file <tfvars file path>`
 
-## Requirements
-
-| Name | Version |
-|------|---------|
-| terraform | >= 0.14 |
-| aws | ~> 2.61 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| aws | ~> 2.61 |
-| template | n/a |
 
 ## Inputs
 
@@ -83,3 +81,4 @@ Launches instance
 | autoscaling\_group\_name | The name of the autoscaling group. |
 | key\_used | The key used to create the resources. |
 | launch\_configuration\_name | The name of the launch configuration. |
+
