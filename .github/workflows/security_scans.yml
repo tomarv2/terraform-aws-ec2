@@ -29,6 +29,6 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           directory: "."
-          skip-check: CKV_AWS_8
+          skip_check: CKV_AWS_8
           framework: terraform # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
           output_format: json
