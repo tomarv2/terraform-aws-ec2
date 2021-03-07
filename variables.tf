@@ -20,7 +20,7 @@ variable "account_id" {
 
 variable "profile_to_use" {
   description = "Getting values from ~/.aws/credentials"
-  default = "default"
+  default     = "default"
 }
 variable "iam_instance_profile_to_use" {
   description = "IAM instance profile"
@@ -28,7 +28,7 @@ variable "iam_instance_profile_to_use" {
 
 variable "security_groups_to_use" {
   description = "Security groups to use"
-  default = []
+  default     = []
 }
 
 variable "aws_region" {
@@ -103,21 +103,21 @@ variable "os_release" {
 
 variable "ebs_vol_size" {
   description = "size of ebs volume"
-  default = "10"
- }
- variable "ebs_vol_name" {
-   description = "name of ebs volume"
-   default = "/dev/xvdh"
- }
- 
+  default     = "10"
+}
+variable "ebs_vol_name" {
+  description = "name of ebs volume"
+  default     = "/dev/xvdh"
+}
+
 variable "ebs_vol_type" {
-   description = "type of ebs volume"
-   default = "gp2"
- }
+  description = "type of ebs volume"
+  default     = "gp2"
+}
 
 variable "efs_to_mount" {
   description = "(Optional) EFS to mount for persistent storage"
-  default = ""
+  default     = ""
 }
 
 variable "force_delete" {
@@ -142,17 +142,45 @@ variable "create_before_destroy" {
   type        = bool
 }
 
-//variable "deployment_maximum_percent" {
-//  default     = "100"
-//}
-//
-//variable "deployment_minimum_healthy_percent" {
-//  default     = "0"
-//}
+
+variable "healthcheck_path" {
+  default = "/"
+}
+
+variable "healthy_threshold" {
+  description = "target group healthcheck threshold"
+  default     = "2"
+}
+
+variable "unhealthy_threshold" {
+  description = "target group unheathy healthcheck threshold"
+  default     = "2"
+}
+
+variable "healthcheck_timeout" {
+  default = "30"
+}
+
+variable "healthcheck_interval" {
+  default = "120"
+}
+
+variable "healthcheck_matcher" {
+  default = "200"
+}
+
+variable "healthcheck_retries" {
+  default = 2
+}
+
+variable "healthcheck_start_period" {
+  default = 120
+}
+
 
 variable "image_id" {
   description = "image id to use for deployment if none is provided a default will be used"
-  default = null
+  default     = null
 }
 
 variable "stickiness" {
@@ -166,5 +194,5 @@ variable "stickiness" {
 
 variable "user_data_file_path" {
   description = "user data file path"
-  default = "scripts/userdata.sh"
+  default     = "scripts/userdata.sh"
 }
