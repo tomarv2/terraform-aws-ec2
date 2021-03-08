@@ -1,11 +1,11 @@
 output "autoscaling_group_name" {
   description = "The name of the autoscaling group."
-  value       = aws_autoscaling_group.asg.name
+  value       = join("", aws_autoscaling_group.asg.*.name)
 }
 
 output "autoscaling_group_arn" {
   description = "The name of the autoscaling group."
-  value       = aws_autoscaling_group.asg.arn
+  value       = join("", aws_autoscaling_group.asg.*.arn)
 }
 
 output "launch_configuration_name" {

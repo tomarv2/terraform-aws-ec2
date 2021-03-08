@@ -6,6 +6,8 @@ locals {
 
 # autoscaling
 resource "aws_autoscaling_group" "asg" {
+  count = var.deploy_ec2 ? 1 : 0
+
   name                      = "${var.teamid}-${var.prjid}"
   launch_configuration      = aws_launch_configuration.launchcfg.name
   min_size                  = var.asg_min

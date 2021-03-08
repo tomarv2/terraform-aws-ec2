@@ -196,3 +196,9 @@ variable "user_data_file_path" {
   description = "user data file path"
   default     = "scripts/userdata.sh"
 }
+
+variable "deploy_ec2" {
+  description = "feature flag, true or false"
+  default     = true
+  type        = bool
+}
