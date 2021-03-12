@@ -98,7 +98,9 @@ locals {
 
 module "ec2" {
   source = "../"
-
+  
+  deploy_ec2 = true
+  
   security_groups_to_use      = module.security_group.security_group_id
   email                       = "demo@demo.com"
   key_name                    = "demo_key"
