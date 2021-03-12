@@ -1,11 +1,11 @@
 locals {
-  security_group = var.security_groups_to_use != null ? flatten([module.securitygroup.security_group_id, var.security_groups_to_use]) : flatten([module.securitygroup.security_group_id])
+  security_group = var.security_groups_to_use != null ? flatten([module.security_group.security_group_id, var.security_groups_to_use]) : flatten([module.security_group.security_group_id])
 }
 
 module "ec2" {
   source = "../"
 
-  security_groups_to_use      = module.securitygroup.security_group_id
+  security_groups_to_use      = module.security_group.security_group_id
   email                       = "demo@demo.com"
   key_name                    = "demo_key"
   iam_instance_profile_to_use = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
@@ -37,8 +37,10 @@ module "lb" {
   security_groups_to_use = local.security_group
 }
 
-module "securitygroup" {
-  source = "git::git@github.com:tomarv2/terraform-aws-securitygroup.git?ref=v0.0.1"
+module "security_group" {
+  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
+
+  deploy_security_group = true
 
   email  = "demo@demo.com"
   teamid = var.teamid

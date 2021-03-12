@@ -10,7 +10,7 @@ output "launch_configuration_name" {
 
 output "security_group_id" {
   description = "The ID of the default security group associated with the EC2 instances."
-  value       = module.securitygroup.security_group_id
+  value       = module.security_group.security_group_id
 }
 
 output "key_used" {

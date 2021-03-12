@@ -1,7 +1,7 @@
 locals {
   imageid = var.image_id != null ? var.image_id : module.global.ec2_ami[var.account_id][var.aws_region]
   # TODO: check this again
-  security_group = var.security_groups_to_use #!= null ? flatten([module.securitygroup.security_group_id, var.security_groups_to_use]) : flatten([module.securitygroup.security_group_id])
+  security_group = var.security_groups_to_use #!= null ? flatten([module.security_group.security_group_id, var.security_groups_to_use]) : flatten([module.security_group.security_group_id])
 }
 
 # autoscaling
@@ -51,6 +51,6 @@ resource "aws_launch_configuration" "launchcfg" {
   }
 
   lifecycle {
-    create_before_destroy = true # cannot be parameterize
+    create_before_destroy = true
   }
 }

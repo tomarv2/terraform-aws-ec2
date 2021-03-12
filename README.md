@@ -32,10 +32,8 @@ Launches instance
 - Module tested for Terraform 0.14.
 - AWS provider version [3.29.0](https://registry.terraform.io/providers/hashicorp/aws/latest)
 - `main` branch: Provider versions not pinned to keep up with Terraform releases
-- `tags` releases: Tags are pinned with versions (use latest     
-        <a href="https://github.com/tomarv2/terraform-aws-ec2/tags" alt="GitHub tag">
-        <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-ec2" /></a>
-  in your releases)
+- `tags` releases: Tags are pinned with versions (use <a href="https://github.com/tomarv2/terraform-aws-ec2/tags" alt="GitHub tag">
+        <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-ec2" /></a in your releases)
 
 **NOTE:** 
 
@@ -62,21 +60,21 @@ export TF_AWS_PROFILE=default
 export TF_AWS_BUCKET_REGION=us-west-2
 ```  
 
-- Updated `examples` directory with required values
+- Updated `examples` directory with required values.
 
 - Run and verify the output before deploying:
 ```
-tf -cloud aws plan -var-file <path to .tfvars file>
+tf -cloud aws plan
 ```
 
 - Run below to deploy:
 ```
-tf -cloud aws apply -var-file <path to .tfvars file>
+tf -cloud aws apply
 ```
 
 - Run below to destroy:
 ```
-tf -cloud aws destroy -var-file <path to .tfvars file>
+tf -cloud aws destroy
 ```
 
 > ❗️ **Important** - Two variables are required for using `tf` package:
@@ -95,13 +93,13 @@ tf -cloud aws destroy -var-file <path to .tfvars file>
 #### EC2 with Target Group, Load Balancer and Security Group
 ```
 locals {
-  security_group = var.security_groups_to_use != null ? flatten([module.securitygroup.security_group_id, var.security_groups_to_use]) : flatten([module.securitygroup.security_group_id])
+  security_group = var.security_groups_to_use != null ? flatten([module.security_group.security_group_id, var.security_groups_to_use]) : flatten([module.security_group.security_group_id])
 }
 
 module "ec2" {
   source = "../"
 
-  security_groups_to_use      = module.securitygroup.security_group_id
+  security_groups_to_use      = module.security_group.security_group_id
   email                       = "demo@demo.com"
   key_name                    = "demo_key"
   iam_instance_profile_to_use = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
@@ -133,9 +131,11 @@ module "lb" {
   security_groups_to_use = local.security_group
 }
 
-module "securitygroup" {
-  source = "git::git@github.com:tomarv2/terraform-aws-securitygroup.git?ref=v0.0.1"
+module "security_group" {
+  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
 
+  deploy_security_group = true
+  
   email  = "demo@demo.com"
   teamid = var.teamid
   prjid  = var.prjid
@@ -143,6 +143,7 @@ module "securitygroup" {
 ```
 
 Please refer to examples directory [link](examples) for references.
+
 ## Requirements
 
 | Name | Version |
@@ -172,6 +173,7 @@ Please refer to examples directory [link](examples) for references.
 | aws\_region | The AWS region to create resources | `string` | `"us-west-2"` | no |
 | az\_count | Number of AZs to cover in a given AWS region | `string` | `"2"` | no |
 | create\_before\_destroy | lifecycle for asg | `bool` | `true` | no |
+| deploy\_ec2 | feature flag, true or false | `bool` | `true` | no |
 | ebs\_vol\_name | name of ebs volume | `string` | `"/dev/xvdh"` | no |
 | ebs\_vol\_size | size of ebs volume | `string` | `"10"` | no |
 | ebs\_vol\_type | type of ebs volume | `string` | `"gp2"` | no |
