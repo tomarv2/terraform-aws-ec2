@@ -194,7 +194,7 @@ variable "stickiness" {
 
 variable "user_data_file_path" {
   description = "user data file path"
-  default     = "scripts/userdata.sh"
+  default     = null
 }
 
 variable "deploy_ec2" {

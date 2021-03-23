@@ -19,13 +19,20 @@
 
 ## The module does the following
 
-Looks-up AMI ID from _**https://github.com/tomarv2/terraform-global**_
-Create security group
-Create load balancer
-Create target group
-Generates cloud-init userdata
-Default tags
-Launches instance
+:point_right: Looks-up AMI ID from _**https://github.com/tomarv2/terraform-global**_
+
+:point_right: Create security group
+
+:point_right: Create load balancer
+
+:point_right: Create target group
+
+:point_right: Generates cloud-init userdata
+
+
+:point_right: Default tags
+
+:point_right: Launches instance(if not Fargate)
 
 ## Versions
 
@@ -98,9 +105,7 @@ locals {
 
 module "ec2" {
   source = "../"
-  
-  deploy_ec2 = true
-  
+
   security_groups_to_use      = module.security_group.security_group_id
   email                       = "demo@demo.com"
   key_name                    = "demo_key"
@@ -135,8 +140,6 @@ module "lb" {
 
 module "security_group" {
   source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
-
-  deploy_security_group = true
   
   email  = "demo@demo.com"
   teamid = var.teamid

@@ -1,6 +1,10 @@
+locals {
+  user_data_file_path = var.user_data_file_path != null ? var.user_data_file_path : "${path.module}/scripts/userdata.sh"
+}
+
 # SECTION: 1
 data "template_file" "shell-script" {
-  template = file(var.user_data_file_path) #file("scripts/userdata.sh")
+  template = file(local.user_data_file_path)
   vars = {
     APP_TO_INSTALL = "${var.teamid}-${var.prjid}"
   }
