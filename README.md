@@ -17,7 +17,7 @@
 
 # Terraform module for AWS EC2
 
-### The module ooks up for AMI ID from _**https://github.com/tomarv2/terraform-global**_
+#### The module looks up for AMI ID from: _**https://github.com/tomarv2/terraform-global**_
 
 ## Versions
 
@@ -25,8 +25,8 @@
 - AWS provider version [3.29.0](https://registry.terraform.io/providers/hashicorp/aws/latest)
 - `main` branch: Provider versions not pinned to keep up with Terraform releases
 - `tags` releases: Tags are pinned with versions (use <a href="https://github.com/tomarv2/terraform-aws-ec2/tags" alt="GitHub tag">
-        <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-ec2" /></a in your releases)
-
+        <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-ec2" /></a> in your releases)
+  
 **NOTE:** 
 
 - Read more on [tfremote](https://github.com/tomarv2/tfremote)
