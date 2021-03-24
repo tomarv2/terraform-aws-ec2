@@ -17,22 +17,7 @@
 
 # Terraform module for AWS EC2
 
-## The module does the following
-
-:point_right: Looks-up AMI ID from _**https://github.com/tomarv2/terraform-global**_
-
-:point_right: Create security group
-
-:point_right: Create load balancer
-
-:point_right: Create target group
-
-:point_right: Generates cloud-init userdata
-
-
-:point_right: Default tags
-
-:point_right: Launches instance(if not Fargate)
+### The module ooks up for AMI ID from _**https://github.com/tomarv2/terraform-global**_
 
 ## Versions
 
@@ -71,17 +56,17 @@ export TF_AWS_BUCKET_REGION=us-west-2
 
 - Run and verify the output before deploying:
 ```
-tf -cloud aws plan
+tf -cloud aws plan -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to deploy:
 ```
-tf -cloud aws apply
+tf -cloud aws apply -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to destroy:
 ```
-tf -cloud aws destroy
+tf -cloud aws destroy -var='teamid=foo' -var='prjid=bar'
 ```
 
 > ❗️ **Important** - Two variables are required for using `tf` package:
@@ -97,7 +82,7 @@ tf -cloud aws destroy
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
-#### EC2 with Target Group, Load Balancer and Security Group
+#### EC2 with Target Group, Load Balancer, and Security Group
 ```
 locals {
   security_group = var.security_groups_to_use != null ? flatten([module.security_group.security_group_id, var.security_groups_to_use]) : flatten([module.security_group.security_group_id])
