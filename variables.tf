@@ -1,7 +1,3 @@
-variable "email" {
-  description = "email address to be used for tagging (suggestion: use group email address)"
-}
-
 variable "teamid" {
   description = "(Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply'"
 }
@@ -142,7 +138,6 @@ variable "create_before_destroy" {
   type        = bool
 }
 
-
 variable "healthcheck_path" {
   default = "/"
 }
@@ -176,7 +171,6 @@ variable "healthcheck_retries" {
 variable "healthcheck_start_period" {
   default = 120
 }
-
 
 variable "image_id" {
   description = "image id to use for deployment if none is provided a default will be used"

@@ -107,7 +107,6 @@ module "ec2" {
   source = "../"
 
   security_groups_to_use      = module.security_group.security_group_id
-  email                       = "demo@demo.com"
   key_name                    = "demo_key"
   iam_instance_profile_to_use = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
   account_id                  = "123456789012"
@@ -120,7 +119,6 @@ module "ec2" {
 module "target_group" {
   source = "git::git@github.com:tomarv2/terraform-aws-target-group.git?ref=v0.0.1"
 
-  email      = "demo@demo.com"
   teamid     = var.teamid
   prjid      = var.prjid
   account_id = "123456789012"
@@ -129,7 +127,6 @@ module "target_group" {
 module "lb" {
   source = "git::git@github.com:tomarv2/terraform-aws-lb.git?ref=v0.0.1"
 
-  email      = "demo@demo.com"
   teamid     = var.teamid
   prjid      = var.prjid
   account_id = "123456789012"
@@ -141,7 +138,6 @@ module "lb" {
 module "security_group" {
   source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
   
-  email  = "demo@demo.com"
   teamid = var.teamid
   prjid  = var.prjid
 }
@@ -183,7 +179,6 @@ Please refer to examples directory [link](examples) for references.
 | ebs\_vol\_size | size of ebs volume | `string` | `"10"` | no |
 | ebs\_vol\_type | type of ebs volume | `string` | `"gp2"` | no |
 | efs\_to\_mount | (Optional) EFS to mount for persistent storage | `string` | `""` | no |
-| email | email address to be used for tagging (suggestion: use group email address) | `any` | n/a | yes |
 | enable\_monitoring | enable monitoring of launch configuration | `string` | `"false"` | no |
 | force\_delete | forcefully delete asg | `string` | `"true"` | no |
 | healthcheck\_interval | n/a | `string` | `"120"` | no |
