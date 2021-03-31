@@ -9,7 +9,7 @@ resource "aws_autoscaling_group" "asg" {
   count = var.deploy_ec2 ? 1 : 0
 
   name                      = "${var.teamid}-${var.prjid}"
-  launch_configuration      = aws_launch_configuration.launchcfg.name
+  launch_configuration      = join("", aws_launch_configuration.launchcfg.*.name)
   min_size                  = var.asg_min
   max_size                  = var.asg_max
   desired_capacity          = var.asg_desired
@@ -35,6 +35,8 @@ resource "aws_autoscaling_group" "asg" {
 
 # launch config
 resource "aws_launch_configuration" "launchcfg" {
+  count = var.deploy_ec2 ? 1 : 0
+
   name                        = "${var.teamid}-${var.prjid}"
   key_name                    = var.key_name
   image_id                    = local.imageid

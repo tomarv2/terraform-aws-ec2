@@ -188,7 +188,7 @@ Please refer to examples directory [link](examples) for references.
 | stickiness | target group sticky configuration | <pre>object({<br>    cookie_duration = number<br>    enabled         = bool<br>  })</pre> | `null` | no |
 | teamid | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `any` | n/a | yes |
 | unhealthy\_threshold | target group unheathy healthcheck threshold | `string` | `"2"` | no |
-| user\_data\_file\_path | user data file path | `string` | `"scripts/userdata.sh"` | no |
+| user\_data\_file\_path | user data file path | `any` | `null` | no |
 
 ## Outputs
 
