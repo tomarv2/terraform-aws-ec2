@@ -3,7 +3,7 @@ locals {
 }
 
 # SECTION: 1
-data "template_file" "shell-script" {
+data "template_file" "shell_script" {
   template = file(local.user_data_file_path)
   vars = {
     APP_TO_INSTALL = "${var.teamid}-${var.prjid}"
@@ -16,6 +16,6 @@ data "template_cloudinit_config" "cloudinit" {
   base64_encode = false
   part {
     content_type = "text/x-shellscript"
-    content      = data.template_file.shell-script.rendered
+    content      = data.template_file.shell_script.rendered
   }
 }

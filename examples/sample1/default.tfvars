@@ -1,0 +1,5 @@
+teamid                      = "rumse"
+prjid                       = "demo"
+aws_region                  = "us-west-2"
+key_name                    = "demo_key"
+iam_instance_profile_to_use = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"

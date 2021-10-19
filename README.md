@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="https://github.com/tomarv2/terraform-aws-ec2/actions/workflows/security_scans.yml" alt="Security Scans">
-        <img src="https://github.com/tomarv2/terraform-aws-ec2/actions/workflows/security_scans.yml/badge.svg?branch=main" /></a>
+    <a href="https://github.com/tomarv2/terraform-aws-ec2/actions/workflows/pre-commit.yml" alt="Pre Commit">
+        <img src="https://github.com/tomarv2/terraform-aws-ec2/actions/workflows/pre-commit.yml/badge.svg?branch=main" /></a>
     <a href="https://www.apache.org/licenses/LICENSE-2.0" alt="license">
         <img src="https://img.shields.io/github/license/tomarv2/terraform-aws-ec2" /></a>
     <a href="https://github.com/tomarv2/terraform-aws-ec2/tags" alt="GitHub tag">
@@ -21,13 +21,13 @@
 
 ## Versions
 
-- Module tested for Terraform 0.14.
-- AWS provider version [3.29.0](https://registry.terraform.io/providers/hashicorp/aws/latest)
+- Module tested for Terraform 1.0.1.
+- AWS provider version [3.63](https://registry.terraform.io/providers/hashicorp/aws/latest)
 - `main` branch: Provider versions not pinned to keep up with Terraform releases
 - `tags` releases: Tags are pinned with versions (use <a href="https://github.com/tomarv2/terraform-aws-ec2/tags" alt="GitHub tag">
         <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-ec2" /></a> in your releases)
-  
-**NOTE:** 
+
+**NOTE:**
 
 - Read more on [tfremote](https://github.com/tomarv2/tfremote)
 
@@ -35,7 +35,7 @@
 
 Recommended method:
 
-- Create python 3.6+ virtual environment 
+- Create python 3.8+ virtual environment
 ```
 python3 -m venv <venv name>
 ```
@@ -50,7 +50,7 @@ pip install tfremote
 export TF_AWS_BUCKET=<remote state bucket name>
 export TF_AWS_PROFILE=default
 export TF_AWS_BUCKET_REGION=us-west-2
-```  
+```
 
 - Updated `examples` directory with required values.
 
@@ -122,7 +122,7 @@ module "lb" {
 
 module "security_group" {
   source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
-  
+
   teamid = var.teamid
   prjid  = var.prjid
 }
@@ -134,67 +134,65 @@ Please refer to examples directory [link](examples) for references.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.14 |
-| aws | ~> 3.29 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.63 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.29 |
-| template | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.63 |
+| <a name="provider_template"></a> [template](#provider\_template) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_global"></a> [global](#module\_global) | git::git@github.com:tomarv2/terraform-global.git//aws | v0.0.1 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_autoscaling_group.asg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_launch_configuration.launchcfg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_configuration) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [template_cloudinit_config.cloudinit](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/cloudinit_config) | data source |
+| [template_file.shell_script](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| account\_id | (Required) AWS account id (used to pull values from shared base module like vpc info, subnet ids) | `any` | n/a | yes |
-| asg\_cooldown | time between a scaling activity and the succeeding scaling activity | `string` | `"300"` | no |
-| asg\_desired | The desired number of instances for the autoscaling group | `number` | `1` | no |
-| asg\_health\_check\_type | can be EC2 or ELB | `string` | `"EC2"` | no |
-| asg\_health\_grace\_period | How long to wait for instance to come up and start doing health checks | `number` | `600` | no |
-| asg\_max | The maximum number of instances for the autoscaling group | `number` | `1` | no |
-| asg\_min | The minimum number of instances for the autoscaling group | `number` | `1` | no |
-| associate\_public\_ip | associate public ip to launch configuration | `string` | `"true"` | no |
-| aws\_region | The AWS region to create resources | `string` | `"us-west-2"` | no |
-| az\_count | Number of AZs to cover in a given AWS region | `string` | `"2"` | no |
-| create\_before\_destroy | lifecycle for asg | `bool` | `true` | no |
-| deploy\_ec2 | feature flag, true or false | `bool` | `true` | no |
-| ebs\_vol\_name | name of ebs volume | `string` | `"/dev/xvdh"` | no |
-| ebs\_vol\_size | size of ebs volume | `string` | `"10"` | no |
-| ebs\_vol\_type | type of ebs volume | `string` | `"gp2"` | no |
-| efs\_to\_mount | (Optional) EFS to mount for persistent storage | `string` | `""` | no |
-| enable\_monitoring | enable monitoring of launch configuration | `string` | `"false"` | no |
-| force\_delete | forcefully delete asg | `string` | `"true"` | no |
-| healthcheck\_interval | n/a | `string` | `"120"` | no |
-| healthcheck\_matcher | n/a | `string` | `"200"` | no |
-| healthcheck\_path | n/a | `string` | `"/"` | no |
-| healthcheck\_retries | n/a | `number` | `2` | no |
-| healthcheck\_start\_period | n/a | `number` | `120` | no |
-| healthcheck\_timeout | n/a | `string` | `"30"` | no |
-| healthy\_threshold | target group healthcheck threshold | `string` | `"2"` | no |
-| iam\_instance\_profile\_to\_use | IAM instance profile | `any` | n/a | yes |
-| image\_id | image id to use for deployment if none is provided a default will be used | `any` | `null` | no |
-| inst\_type | aws instance type | `string` | `"t2.small"` | no |
-| key\_name | The SSH key name (NOTE: key should pre-exist) | `any` | n/a | yes |
-| os\_release | ami os release | `string` | `"test_ops_latest"` | no |
-| os\_version | ami os version | `string` | `"Centos7X86_64"` | no |
-| prjid | (Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply' | `any` | n/a | yes |
-| profile\_to\_use | Getting values from ~/.aws/credentials | `string` | `"default"` | no |
-| root\_volume\_size | In gigabytes, must be at least 8 | `number` | `30` | no |
-| root\_volume\_type | can be standard or gp2 | `string` | `"gp2"` | no |
-| security\_groups\_to\_use | Security groups to use | `list` | `[]` | no |
-| spot-instance-price | set to blank to use on-demand pricing | `string` | `""` | no |
-| stickiness | target group sticky configuration | <pre>object({<br>    cookie_duration = number<br>    enabled         = bool<br>  })</pre> | `null` | no |
-| teamid | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `any` | n/a | yes |
-| unhealthy\_threshold | target group unheathy healthcheck threshold | `string` | `"2"` | no |
-| user\_data\_file\_path | user data file path | `any` | `null` | no |
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | AWS account id (used to pull values from shared base module like vpc info, subnet ids) | `string` | n/a | yes |
+| <a name="input_asg_cooldown"></a> [asg\_cooldown](#input\_asg\_cooldown) | time between a scaling activity and the succeeding scaling activity | `string` | `"300"` | no |
+| <a name="input_asg_desired"></a> [asg\_desired](#input\_asg\_desired) | The desired number of instances for the autoscaling group | `string` | `1` | no |
+| <a name="input_asg_health_check_type"></a> [asg\_health\_check\_type](#input\_asg\_health\_check\_type) | can be EC2 or ELB | `string` | `"EC2"` | no |
+| <a name="input_asg_health_grace_period"></a> [asg\_health\_grace\_period](#input\_asg\_health\_grace\_period) | How long to wait for instance to come up and start doing health checks | `number` | `600` | no |
+| <a name="input_asg_max"></a> [asg\_max](#input\_asg\_max) | The maximum number of instances for the autoscaling group | `string` | `1` | no |
+| <a name="input_asg_min"></a> [asg\_min](#input\_asg\_min) | The minimum number of instances for the autoscaling group | `string` | `1` | no |
+| <a name="input_associate_public_ip"></a> [associate\_public\_ip](#input\_associate\_public\_ip) | associate public ip to launch configuration | `string` | `"true"` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to create resources | `string` | `null` | no |
+| <a name="input_deploy_ec2"></a> [deploy\_ec2](#input\_deploy\_ec2) | feature flag, true or false | `bool` | `true` | no |
+| <a name="input_enable_monitoring"></a> [enable\_monitoring](#input\_enable\_monitoring) | enable monitoring of launch configuration | `string` | `"false"` | no |
+| <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | forcefully delete asg | `string` | `"true"` | no |
+| <a name="input_iam_instance_profile_to_use"></a> [iam\_instance\_profile\_to\_use](#input\_iam\_instance\_profile\_to\_use) | IAM instance profile | `string` | n/a | yes |
+| <a name="input_image_id"></a> [image\_id](#input\_image\_id) | image id to use for deployment if none is provided a default will be used | `string` | `null` | no |
+| <a name="input_inst_type"></a> [inst\_type](#input\_inst\_type) | aws instance type | `string` | `"t2.small"` | no |
+| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The SSH key name (NOTE: key should pre-exist) | `string` | n/a | yes |
+| <a name="input_prjid"></a> [prjid](#input\_prjid) | (Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply' | `string` | n/a | yes |
+| <a name="input_root_volume_size"></a> [root\_volume\_size](#input\_root\_volume\_size) | In gigabytes, must be at least 8 | `number` | `30` | no |
+| <a name="input_root_volume_type"></a> [root\_volume\_type](#input\_root\_volume\_type) | can be standard or gp2 | `string` | `"gp2"` | no |
+| <a name="input_security_groups_to_use"></a> [security\_groups\_to\_use](#input\_security\_groups\_to\_use) | Security groups to use | `list(any)` | `[]` | no |
+| <a name="input_teamid"></a> [teamid](#input\_teamid) | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `string` | n/a | yes |
+| <a name="input_user_data_file_path"></a> [user\_data\_file\_path](#input\_user\_data\_file\_path) | user data file path | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| autoscaling\_group\_arn | The name of the autoscaling group. |
-| autoscaling\_group\_name | The name of the autoscaling group. |
-| key\_used | The key used to create the resources. |
-| launch\_configuration\_name | The name of the launch configuration. |
+| <a name="output_autoscaling_group_arn"></a> [autoscaling\_group\_arn](#output\_autoscaling\_group\_arn) | The name of the autoscaling group. |
+| <a name="output_autoscaling_group_name"></a> [autoscaling\_group\_name](#output\_autoscaling\_group\_name) | The name of the autoscaling group. |
+| <a name="output_key_used"></a> [key\_used](#output\_key\_used) | The key used to create the resources. |
+| <a name="output_launch_configuration_name"></a> [launch\_configuration\_name](#output\_launch\_configuration\_name) | The name of the launch configuration. |

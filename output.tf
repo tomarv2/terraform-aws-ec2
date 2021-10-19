@@ -4,7 +4,7 @@ output "autoscaling_group_name" {
 }
 
 output "autoscaling_group_arn" {
-  description = "The name of the autoscaling group."
+  description = "The arn of the autoscaling group."
   value       = join("", aws_autoscaling_group.asg.*.arn)
 }
 
