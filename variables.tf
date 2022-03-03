@@ -1,20 +1,15 @@
 variable "teamid" {
-  description = "(Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply'"
+  description = "Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply'"
   type        = string
 }
 
 variable "prjid" {
-  description = "(Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply'"
+  description = "Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply'"
   type        = string
 }
 
 variable "key_name" {
   description = "The SSH key name (NOTE: key should pre-exist)"
-  type        = string
-}
-
-variable "account_id" {
-  description = "AWS account id (used to pull values from shared base module like vpc info, subnet ids)"
   type        = string
 }
 
@@ -27,12 +22,6 @@ variable "security_groups" {
   description = "Security groups to use"
   default     = []
   type        = list(any)
-}
-
-variable "aws_region" {
-  description = "The AWS region to create resources"
-  type        = string
-  default     = null
 }
 
 variable "asg_min" {
@@ -124,7 +113,7 @@ variable "user_data_file_path" {
 }
 
 variable "deploy_ec2" {
-  description = "feature flag, true or false"
+  description = "Feature flag, true or false"
   default     = true
   type        = bool
 }

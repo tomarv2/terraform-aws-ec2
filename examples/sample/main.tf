@@ -1,19 +1,22 @@
+terraform {
+  required_version = ">= 1.0.1"
+  required_providers {
+    aws = {
+      version = "~> 3.63"
+    }
+  }
+}
+
 provider "aws" {
-  region  = var.aws_region
-  profile = var.profile
+  region = var.region
 }
 module "common" {
   source = "git::git@github.com:tomarv2/terraform-global.git//common?ref=v0.0.1"
 }
 
-data "aws_region" "current" {}
-
-data "aws_caller_identity" "current" {}
 
 locals {
-  security_group      = var.security_groups != null ? flatten([module.security_group.security_group_id, var.security_groups]) : flatten([module.security_group.security_group_id])
-  account_info        = var.account_id != null ? var.account_id : data.aws_caller_identity.current.account_id
-  override_aws_region = var.aws_region != null ? var.aws_region : data.aws_region.current.name
+  security_group = var.security_groups != null ? flatten([module.security_group.security_group_id, var.security_groups]) : flatten([module.security_group.security_group_id])
 }
 
 module "ec2" {
@@ -22,7 +25,7 @@ module "ec2" {
   security_groups      = local.security_group
   key_name             = var.key_name
   iam_instance_profile = var.iam_instance_profile
-  account_id           = local.account_info
+
   #-----------------------------------------------
   # Note: Do not change teamid and prjid once set.
   teamid = var.teamid
@@ -34,10 +37,9 @@ module "target_group" {
 
   deploy_target_group = var.deploy_target_group
 
-  teamid               = var.teamid
-  prjid                = var.prjid
-  account_id           = local.account_info
-  aws_region           = local.override_aws_region
+  teamid = var.teamid
+  prjid  = var.prjid
+
   lb_protocol          = var.target_group_protocol != null ? var.target_group_protocol : var.lb_protocol
   lb_port              = var.target_group_port != null ? var.target_group_port : var.lb_port
   healthcheck_path     = var.healthcheck_path
@@ -55,10 +57,9 @@ module "lb" {
 
   deploy_lb = var.deploy_lb
 
-  teamid           = var.teamid
-  prjid            = var.prjid
-  account_id       = local.account_info
-  aws_region       = local.override_aws_region
+  teamid = var.teamid
+  prjid  = var.prjid
+
   lb_port          = var.lb_port
   target_group_arn = module.target_group.target_group_arn
   security_groups  = local.security_group
@@ -72,8 +73,7 @@ module "security_group" {
 
   deploy_security_group = var.deploy_security_group
 
-  account_id = local.account_info
-  aws_region = local.override_aws_region
+
   security_group_ingress = {
     default = {
       description = "https"

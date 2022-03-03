@@ -3,7 +3,7 @@ module "global" {
 }
 
 locals {
-  imageid = var.image_id != null ? var.image_id : module.global.ec2_ami[local.account_info][local.override_aws_region]
+  imageid = var.image_id != null ? var.image_id : module.global.ec2_ami[local.account_id][local.region]
 }
 
 # autoscaling
@@ -19,7 +19,7 @@ resource "aws_autoscaling_group" "asg" {
   health_check_grace_period = var.asg_health_grace_period
   health_check_type         = var.asg_health_check_type
   default_cooldown          = var.asg_cooldown
-  vpc_zone_identifier       = module.global.list_of_subnets[local.account_info][local.override_aws_region]
+  vpc_zone_identifier       = module.global.list_of_subnets[local.account_id][local.region]
 
   dynamic "tag" {
     for_each = local.asg_tags

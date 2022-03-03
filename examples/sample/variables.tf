@@ -14,31 +14,14 @@ variable "security_groups" {
   type        = list(any)
 }
 
-variable "account_id" {
-  description = "AWS account id (used to pull values from shared base module like vpc info, subnet ids)"
-  type        = string
-  default     = null
-}
-
-variable "profile" {
-  default     = "default"
-  type        = string
-  description = "aws profile to use"
-}
-variable "aws_region" {
-  description = "The AWS region to create resources"
-  type        = string
-  default     = null
-}
-
 variable "deploy_security_group" {
-  description = "feature flag, true or false"
+  description = "Feature flag, true or false"
   default     = true
   type        = bool
 }
 
 variable "deploy_target_group" {
-  description = "feature flag, true or false"
+  description = "Feature flag, true or false"
   default     = true
   type        = bool
 }
@@ -93,7 +76,7 @@ variable "unhealthy_threshold" {
 }
 
 variable "deploy_lb" {
-  description = "feature flag, true or false"
+  description = "Feature flag, true or false"
   default     = true
   type        = bool
 }
@@ -136,4 +119,10 @@ variable "key_name" {
 variable "iam_instance_profile" {
   type        = string
   description = "iam instance profile"
+}
+
+variable "region" {
+  description = "AWS region to create resources"
+  default     = "us-west-2"
+  type        = string
 }
