@@ -25,13 +25,21 @@
 - `tags` releases: Tags are pinned with versions (use <a href="https://github.com/tomarv2/terraform-aws-ec2/tags" alt="GitHub tag">
         <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-ec2" /></a> in your releases)
 
-**NOTE:**
-
-- Read more on [tfremote](https://github.com/tomarv2/tfremote)
-
 ## Usage
 
-Recommended method:
+### Option 1:
+
+```
+terrafrom init
+terraform plan -var='teamid=tryme' -var='prjid=project1'
+terraform apply -var='teamid=tryme' -var='prjid=project1'
+terraform destroy -var='teamid=tryme' -var='prjid=project1'
+```
+**Note:** With this option please take care of remote state storage
+
+### Option 2:
+
+#### Recommended method (stores remote state in S3 using `prjid` and `teamid` to create directory structure):
 
 - Create python 3.8+ virtual environment
 ```
@@ -40,102 +48,47 @@ python3 -m venv <venv name>
 
 - Install package:
 ```
-pip install tfremote
+pip install tfremote --upgrade
 ```
 
 - Set below environment variables:
 ```
 export TF_AWS_BUCKET=<remote state bucket name>
-export TF_AWS_PROFILE=default
 export TF_AWS_BUCKET_REGION=us-west-2
+export TF_AWS_PROFILE=<profile from ~/.ws/credentials>
+```
+
+or
+
+- Set below environment variables:
+```
+export TF_AWS_BUCKET=<remote state bucket name>
+export TF_AWS_BUCKET_REGION=us-west-2
+export AWS_ACCESS_KEY_ID=<aws_access_key_id>
+export AWS_SECRET_ACCESS_KEY=<aws_secret_access_key>
 ```
 
 - Updated `examples` directory with required values.
 
 - Run and verify the output before deploying:
 ```
-tf -cloud aws plan -var='teamid=foo' -var='prjid=bar'
+tf -c=aws plan -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to deploy:
 ```
-tf -cloud aws apply -var='teamid=foo' -var='prjid=bar'
+tf -c=aws apply -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to destroy:
 ```
-tf -cloud aws destroy -var='teamid=foo' -var='prjid=bar'
+tf -c=aws destroy -var='teamid=foo' -var='prjid=bar'
 ```
 
-> ❗️ **Important** - Two variables are required for using `tf` package:
->
-> - teamid
-> - prjid
->
-> These variables are required to set backend path in the remote storage.
-> Variables can be defined using:
->
-> - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
-> - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
->
-> For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
+**NOTE:**
 
-#### EC2 with Target Group, Load Balancer, and Security Group
-```
-locals {
-  security_group = var.security_groups != null ? flatten([module.security_group.security_group_id, var.security_groups]) : flatten([module.security_group.security_group_id])
-}
-
-module "ec2" {
-  source = "../"
-
-  security_groups      = module.security_group.security_group_id
-<<<<<<< HEAD
-  key_name             = "demo_key"
-  iam_instance_profile = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
-  account_id           = "123456789012"
-=======
-  key_name                    = "demo_key"
-  iam_instance_profile = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
-  account_id                  = "123456789012"
->>>>>>> 5e7893b95a2f32ca563b9baecd16c837ee2ecee8
-  #-----------------------------------------------
-  # Note: Do not change teamid and prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-
-module "target_group" {
-  source = "git::git@github.com:tomarv2/terraform-aws-target-group.git?ref=v0.0.1"
-
-  teamid     = var.teamid
-  prjid      = var.prjid
-  account_id = "123456789012"
-}
-
-module "lb" {
-  source = "git::git@github.com:tomarv2/terraform-aws-lb.git?ref=v0.0.1"
-
-  teamid     = var.teamid
-  prjid      = var.prjid
-  account_id = "123456789012"
-
-<<<<<<< HEAD
-  target_group_arn = module.target_group.target_group_arn
-  security_groups  = local.security_group
-=======
-  target_group_arn       = module.target_group.target_group_arn
-  security_groups = local.security_group
->>>>>>> 5e7893b95a2f32ca563b9baecd16c837ee2ecee8
-}
-
-module "security_group" {
-  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
-
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-```
+- Read more on [tfremote](https://github.com/tomarv2/tfremote)
+---
 
 Please refer to examples directory [link](examples) for references.
 
