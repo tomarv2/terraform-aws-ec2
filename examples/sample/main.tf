@@ -20,9 +20,9 @@ module "ec2" {
   source = "../../"
 
   security_groups      = local.security_group
-  key_name                    = var.key_name
+  key_name             = var.key_name
   iam_instance_profile = var.iam_instance_profile
-  account_id                  = local.account_info
+  account_id           = local.account_info
   #-----------------------------------------------
   # Note: Do not change teamid and prjid once set.
   teamid = var.teamid
@@ -55,17 +55,17 @@ module "lb" {
 
   deploy_lb = var.deploy_lb
 
-  teamid                 = var.teamid
-  prjid                  = var.prjid
-  account_id             = local.account_info
-  aws_region             = local.override_aws_region
-  lb_port                = var.lb_port
-  target_group_arn       = module.target_group.target_group_arn
-  security_groups = local.security_group
-  lb_type                = var.lb_type
-  lb_protocol            = var.lb_protocol
-  alb_cert_arn           = var.alb_cert_arn
-  alb_ssl_policy         = var.alb_ssl_policy
+  teamid           = var.teamid
+  prjid            = var.prjid
+  account_id       = local.account_info
+  aws_region       = local.override_aws_region
+  lb_port          = var.lb_port
+  target_group_arn = module.target_group.target_group_arn
+  security_groups  = local.security_group
+  lb_type          = var.lb_type
+  lb_protocol      = var.lb_protocol
+  alb_cert_arn     = var.alb_cert_arn
+  alb_ssl_policy   = var.alb_ssl_policy
 }
 module "security_group" {
   source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.5"
