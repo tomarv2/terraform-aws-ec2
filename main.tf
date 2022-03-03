@@ -43,9 +43,9 @@ resource "aws_launch_configuration" "launchcfg" {
   key_name                    = var.key_name
   image_id                    = local.imageid
   instance_type               = var.inst_type
-  iam_instance_profile        = var.iam_instance_profile_to_use
+  iam_instance_profile        = var.iam_instance_profile
   enable_monitoring           = var.enable_monitoring
-  security_groups             = flatten([var.security_groups_to_use])
+  security_groups             = flatten([var.security_groups])
   associate_public_ip_address = var.associate_public_ip
   user_data                   = data.template_cloudinit_config.cloudinit.rendered
 
