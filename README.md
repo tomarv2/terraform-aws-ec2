@@ -85,15 +85,15 @@ tf -cloud aws destroy -var='teamid=foo' -var='prjid=bar'
 #### EC2 with Target Group, Load Balancer, and Security Group
 ```
 locals {
-  security_group = var.security_groups_to_use != null ? flatten([module.security_group.security_group_id, var.security_groups_to_use]) : flatten([module.security_group.security_group_id])
+  security_group = var.security_groups != null ? flatten([module.security_group.security_group_id, var.security_groups]) : flatten([module.security_group.security_group_id])
 }
 
 module "ec2" {
   source = "../"
 
-  security_groups_to_use      = module.security_group.security_group_id
+  security_groups      = module.security_group.security_group_id
   key_name                    = "demo_key"
-  iam_instance_profile_to_use = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
+  iam_instance_profile = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
   account_id                  = "123456789012"
   #-----------------------------------------------
   # Note: Do not change teamid and prjid once set.
@@ -117,7 +117,7 @@ module "lb" {
   account_id = "123456789012"
 
   target_group_arn       = module.target_group.target_group_arn
-  security_groups_to_use = local.security_group
+  security_groups = local.security_group
 }
 
 module "security_group" {
@@ -177,14 +177,14 @@ Please refer to examples directory [link](examples) for references.
 | <a name="input_deploy_ec2"></a> [deploy\_ec2](#input\_deploy\_ec2) | feature flag, true or false | `bool` | `true` | no |
 | <a name="input_enable_monitoring"></a> [enable\_monitoring](#input\_enable\_monitoring) | enable monitoring of launch configuration | `string` | `"false"` | no |
 | <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | forcefully delete asg | `string` | `"true"` | no |
-| <a name="input_iam_instance_profile_to_use"></a> [iam\_instance\_profile\_to\_use](#input\_iam\_instance\_profile\_to\_use) | IAM instance profile | `string` | n/a | yes |
+| <a name="input_iam_instance_profile"></a> [iam\_instance\_profile\_to\_use](#input\_iam\_instance\_profile\_to\_use) | IAM instance profile | `string` | n/a | yes |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | image id to use for deployment if none is provided a default will be used | `string` | `null` | no |
 | <a name="input_inst_type"></a> [inst\_type](#input\_inst\_type) | aws instance type | `string` | `"t2.small"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The SSH key name (NOTE: key should pre-exist) | `string` | n/a | yes |
 | <a name="input_prjid"></a> [prjid](#input\_prjid) | (Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply' | `string` | n/a | yes |
 | <a name="input_root_volume_size"></a> [root\_volume\_size](#input\_root\_volume\_size) | In gigabytes, must be at least 8 | `number` | `30` | no |
 | <a name="input_root_volume_type"></a> [root\_volume\_type](#input\_root\_volume\_type) | can be standard or gp2 | `string` | `"gp2"` | no |
-| <a name="input_security_groups_to_use"></a> [security\_groups\_to\_use](#input\_security\_groups\_to\_use) | Security groups to use | `list(any)` | `[]` | no |
+| <a name="input_security_groups"></a> [security\_groups\_to\_use](#input\_security\_groups\_to\_use) | Security groups to use | `list(any)` | `[]` | no |
 | <a name="input_teamid"></a> [teamid](#input\_teamid) | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `string` | n/a | yes |
 | <a name="input_user_data_file_path"></a> [user\_data\_file\_path](#input\_user\_data\_file\_path) | user data file path | `string` | `null` | no |
 

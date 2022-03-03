@@ -18,12 +18,12 @@ variable "account_id" {
   type        = string
 }
 
-variable "iam_instance_profile_to_use" {
+variable "iam_instance_profile" {
   description = "IAM instance profile"
   type        = string
 }
 
-variable "security_groups_to_use" {
+variable "security_groups" {
   description = "Security groups to use"
   default     = []
   type        = list(any)

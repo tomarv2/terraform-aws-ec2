@@ -8,7 +8,7 @@ variable "prjid" {
   type        = string
 }
 
-variable "security_groups_to_use" {
+variable "security_groups" {
   description = "Security groups to use"
   default     = []
   type        = list(any)
@@ -20,7 +20,7 @@ variable "account_id" {
   default     = null
 }
 
-variable "profile_to_use" {
+variable "profile" {
   default     = "default"
   type        = string
   description = "aws profile to use"
@@ -133,7 +133,7 @@ variable "key_name" {
   description = "aws ssh key name"
 }
 
-variable "iam_instance_profile_to_use" {
+variable "iam_instance_profile" {
   type        = string
   description = "iam instance profile"
 }

@@ -1,6 +1,6 @@
 provider "aws" {
   region  = var.aws_region
-  profile = var.profile_to_use
+  profile = var.profile
 }
 module "common" {
   source = "git::git@github.com:tomarv2/terraform-global.git//common?ref=v0.0.1"
@@ -11,7 +11,7 @@ data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
 locals {
-  security_group      = var.security_groups_to_use != null ? flatten([module.security_group.security_group_id, var.security_groups_to_use]) : flatten([module.security_group.security_group_id])
+  security_group      = var.security_groups != null ? flatten([module.security_group.security_group_id, var.security_groups]) : flatten([module.security_group.security_group_id])
   account_info        = var.account_id != null ? var.account_id : data.aws_caller_identity.current.account_id
   override_aws_region = var.aws_region != null ? var.aws_region : data.aws_region.current.name
 }
@@ -19,9 +19,9 @@ locals {
 module "ec2" {
   source = "../../"
 
-  security_groups_to_use      = local.security_group
+  security_groups      = local.security_group
   key_name                    = var.key_name
-  iam_instance_profile_to_use = var.iam_instance_profile_to_use
+  iam_instance_profile = var.iam_instance_profile
   account_id                  = local.account_info
   #-----------------------------------------------
   # Note: Do not change teamid and prjid once set.
@@ -61,7 +61,7 @@ module "lb" {
   aws_region             = local.override_aws_region
   lb_port                = var.lb_port
   target_group_arn       = module.target_group.target_group_arn
-  security_groups_to_use = local.security_group
+  security_groups = local.security_group
   lb_type                = var.lb_type
   lb_protocol            = var.lb_protocol
   alb_cert_arn           = var.alb_cert_arn
