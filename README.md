@@ -90,9 +90,15 @@ module "ec2" {
   source = "../"
 
   security_groups      = module.security_group.security_group_id
+<<<<<<< HEAD
   key_name             = "demo_key"
   iam_instance_profile = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
   account_id           = "123456789012"
+=======
+  key_name                    = "demo_key"
+  iam_instance_profile = "arn:aws:iam::123456789012:instance-profile/rumse-demo-role"
+  account_id                  = "123456789012"
+>>>>>>> 5e7893b95a2f32ca563b9baecd16c837ee2ecee8
   #-----------------------------------------------
   # Note: Do not change teamid and prjid once set.
   teamid = var.teamid
@@ -114,8 +120,13 @@ module "lb" {
   prjid      = var.prjid
   account_id = "123456789012"
 
+<<<<<<< HEAD
   target_group_arn = module.target_group.target_group_arn
   security_groups  = local.security_group
+=======
+  target_group_arn       = module.target_group.target_group_arn
+  security_groups = local.security_group
+>>>>>>> 5e7893b95a2f32ca563b9baecd16c837ee2ecee8
 }
 
 module "security_group" {
