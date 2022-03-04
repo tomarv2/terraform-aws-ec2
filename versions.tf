@@ -4,5 +4,8 @@ terraform {
     aws = {
       version = "~> 3.63"
     }
+    template = {
+      version = "~> 2.2.0"
+    }
   }
 }
